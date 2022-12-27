@@ -1,18 +1,18 @@
 package Book.Repository;
 
+import Book.Controller.BookController;
 import Book.Main;
-import Book.Models.ReadBook;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class BookRepo extends Main {
+import static Book.Main.*;
+
+public class BookRepo extends BookController {
 
     public static ArrayList<String> showBook() {
-        ReadBook readBook = new ReadBook();
-        clearScreen();
-        readBook.readBookList();
+        Main.readBookList();
         if (book.size() > 0) {
             System.out.println("Ini adalah List Judul Buku:");
             int index = 0;
@@ -24,16 +24,15 @@ public class BookRepo extends Main {
             System.out.println("Tidak ada data!");
         }
 
-        if (!isEditing) {
+        if (!Main.isEditing) {
             backToMenu();
         }
         return book;
     }
 
     public static ArrayList<String> findById() {
-        ReadBook readBook = new ReadBook();
-        clearScreen();
-        readBook.readBookList();
+        Main.readBookList();
+        Main.clearScreen();
         Scanner sc = new Scanner(System.in);
         System.out.print("Pilih Indeks> ");
         int index = Integer.parseInt(sc.nextLine());
@@ -42,7 +41,6 @@ public class BookRepo extends Main {
             if (index > book.size()) {
                 throw new IndexOutOfBoundsException("Kamu memasukan data yang salah!");
             } else {
-
                 System.out.println("Data Pada Index :" + index);
                 System.out.println(String.format("[%d] %s", index, book.get(index)));
 
@@ -50,22 +48,24 @@ public class BookRepo extends Main {
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
-        isEditing = false;
+        Main.isEditing = false;
         backToMenu();
         return null;
     }
 
     public static ArrayList<String> saveBook() {
-        clearScreen();
+        Main.clearScreen();
         Scanner sc = new Scanner(System.in);
         System.out.println("Tambahkan Judul Buku yang Ingin ditambahkan");
         System.out.print("Jawab: ");
         String input = sc.nextLine();
+        System.out.print("Jawab: ");
+        String input2 = sc.nextLine();
 
         try {
             // tulis file
             FileWriter fileWriter = new FileWriter(fileName, true);
-            fileWriter.append(String.format("%s%n", input));
+            fileWriter.append(String.format("%s%n", input, input2));
             fileWriter.close();
 
             System.out.println("Berhasil ditambahkan!");
@@ -76,9 +76,8 @@ public class BookRepo extends Main {
         return null;
     }
     public static ArrayList<String> editBook() {
-        ReadBook readBook = new ReadBook();
-        isEditing = true;
-        readBook.readBookList();
+        Main.readBookList();
+        Main.isEditing = true;
         Scanner sc = new Scanner(System.in);
 
         try {
@@ -128,14 +127,13 @@ public class BookRepo extends Main {
             System.out.println(e.getMessage());
         }
 
-        isEditing = false;
+        Main.isEditing = false;
         backToMenu();
         return null;
     }
     public static ArrayList<String> deleteBook() {
-        ReadBook readBook = new ReadBook();
+        Main.readBookList();
         isEditing = true;
-        readBook.readBookList();
         Scanner sc = new Scanner(System.in);
         System.out.println("-----------------");
         if (book.size() > 0) {

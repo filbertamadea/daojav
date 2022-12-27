@@ -1,7 +1,9 @@
 package Book;
 
 import Book.Models.MenuBook;
-import Book.Models.ReadBook;
+
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -12,10 +14,6 @@ public class Main {
     public static boolean isEditing = false;
     static Scanner input;
 
-    public static void setBook(ArrayList<String> book) {
-        Main.book = book;
-    }
-    static ReadBook readBook = new ReadBook();
 
     public static void main(String[] args) {
         book = new ArrayList<>();
@@ -32,6 +30,23 @@ public class Main {
         }
     }
 
+    public static void readBookList() {
+        try {
+            File file = new File(fileName);
+            Scanner fileReader = new Scanner(file);
+
+            // load isi file ke dalam array book
+            book.clear();
+            while (fileReader.hasNextLine()) {
+                String data = fileReader.nextLine();
+                book.add(data);
+            }
+
+        } catch (FileNotFoundException e) {
+            System.out.println("Error karena: " + e.getMessage());
+        }
+    }
+
     public static void clearScreen() {
         try {
             final String os = System.getProperty("os.name");
@@ -41,7 +56,6 @@ public class Main {
                         .start()
                         .waitFor();
             } else {
-                // clear screen untuk Linux, Unix, Mac
                 Runtime.getRuntime().exec("clear");
                 System.out.print("\033[H\033[2J");
                 System.out.flush();
