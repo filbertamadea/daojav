@@ -55,6 +55,7 @@ public class BookRepo extends BookController {
 
     public static ArrayList<String> saveBook() {
         Main.clearScreen();
+        //fungsi save
         Scanner sc = new Scanner(System.in);
         System.out.println("Tambahkan Judul Buku yang Ingin ditambahkan");
         System.out.print("Jawab: ");
